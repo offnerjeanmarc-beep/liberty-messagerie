@@ -32,7 +32,9 @@ $appKeyOk = (bool)preg_match('/^[a-f0-9]{64}$/i', $appKey);
 $checks[] = diag_row('Clé app_key', $appKeyOk, $appKeyOk ? 'format 64 hex OK' : 'format à corriger', true);
 
 $lodgifyKey = (string)($GLOBALS['CONFIG']['lodgify']['api_key'] ?? '');
-$lodgifyOk = $lodgifyKey !== '' && stripos($lodgifyKey, 'VOTRE_') === false;
+$lodgifyOk = $lodgifyKey !== ''
+    && stripos($lodgifyKey, 'VOTRE_') === false
+    && stripos($lodgifyKey, 'A_RENSEIGNER') === false;
 $checks[] = diag_row('Clé API Lodgify', $lodgifyOk, $lodgifyOk ? 'renseignée' : 'non renseignée', true);
 
 try {
