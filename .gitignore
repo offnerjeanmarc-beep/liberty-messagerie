@@ -1,0 +1,21 @@
+# Secrets — ne jamais committer
+config/config.php
+
+# Logs
+*.log
+cron/*.log
+logs/
+_t.txt
+
+# Système
+.DS_Store
+Thumbs.db
+
+# Éditeurs
+.vscode/
+.idea/
+*.swp
+
+# Dépendances éventuelles
+/vendor/
+node_modules/

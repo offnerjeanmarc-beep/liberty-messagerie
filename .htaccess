@@ -1,0 +1,15 @@
+Options -Indexes
+
+<IfModule mod_authz_core.c>
+  <FilesMatch "(^\.|\.log$|\.sql$|config\.php$)">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+  <FilesMatch "(^\.|\.log$|\.sql$|config\.php$)">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+</IfModule>
+
+RedirectMatch 404 ^/(config|src|cron|sql)(/|$)
