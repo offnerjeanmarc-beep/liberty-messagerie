@@ -56,8 +56,14 @@ foreach ($requiredTables as $table) {
 
 foreach (['arrival_date', 'departure_date', 'read_at'] as $column) {
     try {
-        $exists = db_one('SHOW COLUMNS FROM conversations LIKE ?', [$column]);
-        $checks[] = diag_row('Colonne conversations.' . $column, (bool)$exists, $exists ? 'OK' : 'lancer sql/upgrade-2026-06-21-conversation-view.sql');
+        $exists = (int)db_val(
+            "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+             WHERE TABLE_SCHEMA = DATABASE()
+               AND TABLE_NAME = 'conversations'
+               AND COLUMN_NAME = ?",
+            [$column]
+        );
+        $checks[] = diag_row('Colonne conversations.' . $column, $exists > 0, $exists > 0 ? 'OK' : 'lancer sql/upgrade-2026-06-21-conversation-view.sql');
     } catch (Throwable $e) {
         $checks[] = diag_row('Colonne conversations.' . $column, false, 'controle impossible');
     }
