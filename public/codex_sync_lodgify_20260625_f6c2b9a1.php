@@ -33,6 +33,13 @@ foreach ($items as $item) {
     );
 }
 
+$activatedPropertyId = null;
+$activate = (int)($_GET['activate'] ?? 0);
+if ($activate > 0) {
+    db_run('UPDATE properties SET is_active = 1 WHERE lodgify_property_id = ?', [$activate]);
+    $activatedPropertyId = $activate;
+}
+
 $afterRows = db_all(
     'SELECT id, name, lodgify_property_id, lodgify_room_id, is_active
      FROM properties
@@ -51,6 +58,7 @@ echo json_encode(
         'ok' => true,
         'lodgify_count' => count($items),
         'new_count' => count($newRows),
+        'activated_lodgify_property_id' => $activatedPropertyId,
         'new_properties' => $newRows,
         'all_properties' => $afterRows,
     ],
